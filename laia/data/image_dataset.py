@@ -16,10 +16,13 @@ class ImageDataset(torch.utils.data.Dataset):
     def __getitem__(self, index: int) -> Dict[str, Any]:
         """Returns a dictionary containing the given image from the dataset.
         The image is associated with the key 'img'."""
-        img = Image.open(self._imgs[index])
-        if self._transform:
-            img = self._transform(img)
-        return {"img": img}
+        try:
+            img = Image.open(self._imgs[index])
+            if self._transform:
+                img = self._transform(img)
+            return {"img": img}
+        except Exception as e:
+            raise RuntimeError(f'Error with dataset index {index} image path {self._imgs[index]}') from e
 
     def __len__(self) -> int:
         return len(self._imgs)
