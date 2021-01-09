@@ -277,7 +277,7 @@ class TrainerArgs(make_dataclass("", __get_trainer_fields())):
 
     def __post_init__(self):
         if (
-            StrictVersion(torch.__version__) < StrictVersion("1.7.0")
+            StrictVersion(torch.__version__.split('+')[0]) < StrictVersion("1.7.0")
             and self.precision != 32
         ):
             raise ValueError(
